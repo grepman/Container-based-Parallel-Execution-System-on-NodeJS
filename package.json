@@ -1,0 +1,27 @@
+{
+  "name": "grepman_compute",
+  "version": "1.0.0",
+  "description": "",
+  "main": "grepman.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./build.sh",
+    "stop-workers": "./node_modules/.bin/forever stop server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "grepman": "grepman.js"
+  },
+  "devDependencies": {
+    "express": "^4.13.4",
+    "forever": "^0.15.1",
+    "jsonfile": "^2.3.0",
+    "ncp": "^2.0.0",
+    "node-schedule": "^1.1.0",
+    "pg": "^4.5.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.22.0",
+    "sha1": "^1.1.1"
+  }
+}

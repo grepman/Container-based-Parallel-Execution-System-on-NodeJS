@@ -1,0 +1,3 @@
+{
+	"pg_sql": "postgres://postgres:accantus@localhost:5432/grepman_containerdb"
+}

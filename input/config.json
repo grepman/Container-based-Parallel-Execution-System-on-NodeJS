@@ -1,0 +1,6 @@
+{
+		"numberOfWorkers": 4,
+		"outputFile": "test-output.txt",
+		"inputFile":["program.js"]
+	
+}
