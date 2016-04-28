@@ -1,5 +1,5 @@
 var pg = require('pg');
-var connectionString = "postgres://postgres:accantus@localhost:5432/grepman_containerdb";
+var connectionString = "postgres://ankit:accantus@localhost:5432/grepman_containerdb";
 var client = new pg.Client(connectionString);
 client.connect();
 

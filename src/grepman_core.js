@@ -34,7 +34,56 @@ core.performAction = function(action){
 					 		
 					 		//use config definations in globals 
 					 		core.util.globals.userConfig = executionLogData.dataJSON
-					 		
+					 		//set up the environment
+					 		var $scope = executionLogData.location.folderPath
+
+					 		if(core.util.globals.userConfig.static_commands)	core.util.ENV_staticExecution(core.util.globals.userConfig.static_commands, $scope)
+
+					 		if(core.util.globals.userConfig.spawn_commands)		core.util.ENV_spawnExecution(core.util.globals.userConfig.spawn_commands, $scope)
+
+					 	// 	var exec = require('child-process-promise').exec;
+
+							// exec('cd "'+executionLogData.location.folderPath+ '" && ' + core.util.globals.userConfig.static_commands.join(' && '))
+							//     .then(function (result) {
+							//         var stdout = result.stdout;
+							//         var stderr = result.stderr;
+							//         console.log('[stdout:] \n', stdout);
+							//         console.log('[stderr:] \n', stderr);
+							//     })
+							//     .catch(function (err) {
+							//         console.error('ERROR: ', err);
+							//     });
+
+
+							// for (i=0; i< core.util.globals.userConfig.spawn_commands.length; i++){
+							// 	try {
+							// 	  process.chdir(executionLogData.location.folderPath);
+							// 	  console.log('New directory: ' + process.cwd());
+							// 	}
+							// 	catch (err) {
+							// 	  console.log('chdir: ' + err);
+							// 	}
+							// 	var spawn_ENV = require('child-process-promise').spawn;
+	
+
+					 	// 	var execute_CMD = spawn_ENV(core.util.globals.userConfig.spawn_commands[i][0], core.util.globals.userConfig.spawn_commands[i][1]);
+					 	// 	var childProcess = execute_CMD.childProcess
+					 	// 	console.log('[spawn] childProcess.pid: ', childProcess.pid);
+							// childProcess.stdout.on('data', function (data) {
+							//     console.log('[spawn] stdout: ', data.toString());
+							// });
+							// childProcess.stderr.on('data', function (data) {
+							//     console.log('[spawn] stderr: ', data.toString());
+							// });
+							 
+							// execute_CMD.then(function () {
+							//         console.log('[spawn] done!');
+							//     })
+							//     .catch(function (err) {
+							//         console.error('[spawn] ERROR: ', err);
+							//     });
+							// }
+												 		
 					 		return executionLogData
 					 	}
 					 )

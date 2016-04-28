@@ -146,10 +146,10 @@ utils.storeOPContainerLocInDB = function(executionLogData, locationSaved){
 	var sha_encrypt = require('sha1');
  
 	var encrypted_sha_key = sha_encrypt(executionLogData.location.folderName);
-	console.log('\n<*> Your API URL is    http://localhost:5000/'+encrypted_sha_key+'\n')
+	
 
 	utils.insertIntoPostgres(['INSERT INTO cached_containers(sha_key, container_location) values($1, $2)', [encrypted_sha_key, locationSaved]])
-
+	console.log('\n<*> Your API URL is    http://localhost:5000/'+encrypted_sha_key+'\n')
 }
 
 utils.insertIntoPostgres = function(query){
@@ -171,6 +171,56 @@ utils.insertIntoPostgres = function(query){
         return 1
 	})
 
+}
+
+utils.process_changeScope = function($scope){
+	try {
+		process.chdir($scope);
+		console.log('New directory: ' + process.cwd());
+	}
+	catch (err) {
+		console.log('chdir: ' + err);
+	}
+}
+
+utils.ENV_staticExecution = function($commands, $scope){
+	utils.process_changeScope($scope)
+	var exec = require('child-process-promise').exec;
+
+	exec($commands.join(' && '))
+	    .then(function (result) {
+	        var stdout = result.stdout;
+	        var stderr = result.stderr;
+	        console.log('\n[exec] stdout: \n', stdout);
+	        console.log('[exec] stderr: --blank-if-noerr \n', stderr);
+	    })
+	    .catch(function (err) {
+	        console.error('[exec] [ERROR:] --blank-if-noerr \n ', err);
+	    });
+}
+
+utils.ENV_spawnExecution = function($commands, $scope){
+	utils.process_changeScope($scope)
+	for (i=0; i< $commands.length; i++){
+
+		var spawn_ENV = require('child-process-promise').spawn
+ 		var execute_CMD = spawn_ENV($commands[i][0], $commands[i][1])
+ 		var childProcess = execute_CMD.childProcess
+	 		console.log('[spawn] childProcess.pid: \n', childProcess.pid);
+			childProcess.stdout.on('data', function (data) {
+			    console.log('[spawn] stdout: \n', data.toString());
+			});
+			childProcess.stderr.on('data', function (data) {
+			    console.log('[spawn] stderr: --blank-if-noerr \n', data.toString());
+			});
+		 
+		execute_CMD.then(function () {
+		        console.log('[spawn] done!');
+		    })
+		    .catch(function (err) {
+		        console.error('[spawn] ERROR: --blank-if-noerr', err);
+		    });
+	}
 }
 
 // utils.spawnProcess('node',['--version'])._onData(function(data){console.log(data.toString());})
